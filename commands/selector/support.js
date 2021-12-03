@@ -18,7 +18,7 @@ module.exports = {
 				await interaction.reply({ content: 'https://www.gmodstore.com/help/tickets/create/addon/4868', ephemeral: true });
 			}
 			else if (addon === 'sexyerrors') {
-				await interaction.reply({ content: '[Here!](https://www.gmodstore.com/help/tickets/create/addon/4892)', ephemeral: true });
+				await interaction.reply({ content: 'https://www.gmodstore.com/help/tickets/create/addon/4892', ephemeral: true });
 			}
 		}
 	},

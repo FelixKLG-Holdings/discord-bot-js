@@ -8,7 +8,10 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('gmodstore')
 		.setDescription('Get the mentioned user\'s attached GmoodStore account')
-		.addUserOption(option => option.setName('member').setDescription('The user you want the GmodStore URL of.')),
+		.addUserOption(option =>
+			option.setName('member')
+				.setDescription('The user you want the GmodStore URL of.')
+				.setRequired(true)),
 	async execute(interaction) {
 
 		const httpClient = axios.create({

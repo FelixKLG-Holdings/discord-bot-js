@@ -8,7 +8,10 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('steam')
 		.setDescription('Get the mentioned user\'s attached Steam™ account')
-		.addUserOption(option => option.setName('member').setDescription('The user you want the SteamID of.')),
+		.addUserOption(option =>
+			option.setName('member')
+				.setDescription('The user you want the SteamID of.')
+				.setRequired(true)),
 	async execute(interaction) {
 
 		const httpClient = axios.create({

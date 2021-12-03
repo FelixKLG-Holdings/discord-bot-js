@@ -1,8 +1,10 @@
 const axios = require('axios');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const Sentry = require("@sentry/node");
 
 const LinkAPIKEY = process.env.API_KEY;
 const LinkURL = process.env.API_URL;
+const SentryEnabled = process.env.SENTRY_ENABLED;
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -29,6 +31,13 @@ module.exports = {
 		}).then(async function(response) {
 			const SteamURL = `https://gmodstore.com/users/${response.data.toString().slice(1)}`;
 			await interaction.reply({ content: SteamURL, ephemeral: true });
+		}).catch(async function(error) {
+			if (error.response.status === 404) {
+				await interaction.reply({content: 'User is not linked.', ephemeral: true});
+			} else {
+				if (SentryEnabled) Sentry.captureException(error);
+			}
+
 		});
 	},
 };

@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const Sentry = require("@sentry/node");
+const Sentry = require('@sentry/node');
 
 const LinkAPIKEY = process.env.API_KEY;
 const LinkURL = process.env.API_URL;
@@ -67,10 +67,9 @@ module.exports = {
 			await interaction.reply({ embeds: [await purchaseEmbed(response.data)], ephemeral: true });
 		}).catch(async function(error) {
 			if (error.response.status === 404) {
-				await interaction.reply({content: 'User is not linked.', ephemeral: true});
-			} else {
-				if (SentryEnabled) Sentry.captureException(error);
+				await interaction.reply({ content: 'User is not linked.', ephemeral: true });
 			}
+			else if (SentryEnabled) {Sentry.captureException(error);}
 		});
 	},
 };

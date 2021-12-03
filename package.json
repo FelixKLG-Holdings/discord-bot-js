@@ -1,0 +1,34 @@
+{
+  "name": "leystryku-bot-js",
+  "version": "1.0.0",
+  "description": "A hopefully temp placement of a JS bot instead of the use of C#",
+  "private": true,
+  "start": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "deploy-commands": "node deploy-commands.js",
+    "lint": "eslint main.js commands events",
+    "lint:fix": "eslint main.js commands events --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeySupport/discord-bot-js.git"
+  },
+  "author": "FelixKLG <felix@felixklg.dev> (https://felixklg.dev/)",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/LeySupport/discord-bot-js/issues"
+  },
+  "homepage": "https://github.com/LeySupport/discord-bot-js#readme",
+  "dependencies": {
+    "@discordjs/builders": "^0.9.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "@sentry/node": "^6.15.0",
+    "@sentry/tracing": "^6.15.0",
+    "axios": "^0.24.0",
+    "discord-api-types": "^0.25.2",
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0",
+    "eslint": "^8.3.0"
+  }
+}

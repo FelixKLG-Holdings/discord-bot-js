@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const { userMention, channelMention} = require('@discordjs/builders')
 const axios = require('axios');
 
 
@@ -13,9 +14,9 @@ module.exports = {
 
 		const WelcomeMessage = new MessageEmbed()
 			.setTitle('Welcome')
-			.setDescription('Welcome to the support server for Leystryku\'s GmodStore addons.\nIf you are not already verified please read <#884069163306479647>.')
+			.setDescription(`Welcome to the support server for Leystryku\'s GmodStore addons.\nIf you are not already verified please read ${channelMention('884069163306479647')}`)
 			.setColor('#85F2F2')
-			.addField('Please remember to read the rules', '<#884050630241550376>');
+			.addField('Please remember to read the rules', channelMention('884050630241550376'));
 
 		const httpClient = axios.create({
 			baseURL: LinkURL,
@@ -32,7 +33,7 @@ module.exports = {
 		}).then(async function(response) {
 			if (response.status === 200) {
 				await member.roles.add(VerifiedMEMBERROLE);
-				await member.guild.channels.cache.get(WelcomeCHANNEL).send({ content: `<@${member.user.id}>`, embeds: [WelcomeMessage] });
+				await member.guild.channels.cache.get(WelcomeCHANNEL).send({ content: userMention(member.user.id), embeds: [WelcomeMessage] });
 				await console.log('test');
 			}
 		}).catch(function(error) {

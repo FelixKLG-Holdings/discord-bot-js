@@ -47,6 +47,6 @@ module.exports = {
 			);
 		await interaction.reply({ content: 'Please select the addon you wish to make a ticket for.', ephemeral: true, components: [addonSelector] });
 		await wait(15000);
-		await interaction.editReply({content: '⏳ Timeout exceeded.', ephemeral: true, components: []})
+		await interaction.editReply({ content: '⏳ Timeout exceeded.', ephemeral: true, components: [] });
 	},
 };

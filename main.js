@@ -70,7 +70,6 @@ client.on('interactionCreate', async interaction => {
 			await selector.execute(interaction);
 		}
 		catch (error) {
-			console.error(error);
 			if (SentryEnabled) Sentry.captureException(error);
 		}
 

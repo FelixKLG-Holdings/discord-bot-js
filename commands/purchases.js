@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const Sentry = require("@sentry/node");
+const Sentry = require('@sentry/node');
 
 const LinkAPIKEY = process.env.API_KEY;
 const LinkURL = process.env.API_URL;
@@ -18,23 +18,23 @@ module.exports = {
 		.setDefaultPermission(false),
 	async execute(interaction) {
 
-		const httpClient = axios.create({
+		const httpClient = await axios.create({
 			baseURL: LinkURL,
 			timeout: 3000,
 			headers: { 'Key': LinkAPIKEY },
 		});
 
-		const mentionedUser = interaction.options.getUser('member');
+		const mentionedUser = await interaction.options.getUser('member');
 
 		async function purchaseEmbed(purchases) {
 
 
-			const Embed = new MessageEmbed()
+			const Embed = await new MessageEmbed()
 				.setTitle('User Purchases')
 				.setDescription(`The purchases of ${mentionedUser.tag}`)
 				.setColor('#BF8AE0');
 
-			for (const addon of purchases) {
+			for (const addon of await purchases) {
 				if (addon === 7648) {
 					Embed.addField('Ley\'s Serverside AntiCheat', 'https://www.gmodstore.com/market/view/7648/', false);
 				}
@@ -61,16 +61,15 @@ module.exports = {
 
 		await httpClient.get('api/purchases', {
 			data: {
-				'id': mentionedUser.id,
+				'id': await mentionedUser.id,
 			},
 		}).then(async function(response) {
 			await interaction.reply({ embeds: [await purchaseEmbed(response.data)], ephemeral: true });
 		}).catch(async function(error) {
 			if (error.response.status === 404) {
-				await interaction.reply({content: 'User is not linked.', ephemeral: true});
-			} else {
-				if (SentryEnabled) Sentry.captureException(error);
+				await interaction.reply({ content: 'User is not linked.', ephemeral: true });
 			}
+			else if (SentryEnabled) {Sentry.captureException(error);}
 		});
 	},
 };

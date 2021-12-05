@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { userMention, channelMention} = require('@discordjs/builders')
+const { userMention, channelMention } = require('@discordjs/builders');
 const axios = require('axios');
 
 
@@ -14,7 +14,7 @@ module.exports = {
 
 		const WelcomeMessage = new MessageEmbed()
 			.setTitle('Welcome')
-			.setDescription(`Welcome to the support server for Leystryku\'s GmodStore addons.\nIf you are not already verified please read ${channelMention('884069163306479647')}`)
+			.setDescription(`Welcome to the support server for Leystryku's GmodStore addons.\nIf you are not already verified please read ${channelMention('884069163306479647')}`)
 			.setColor('#85F2F2')
 			.addField('Please remember to read the rules', channelMention('884050630241550376'));
 

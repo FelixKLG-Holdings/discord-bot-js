@@ -16,13 +16,13 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 
-		const httpClient = axios.create({
+		const httpClient = await axios.create({
 			baseURL: LinkURL,
 			timeout: 3000,
 			headers: { 'Key': LinkAPIKEY },
 		});
 
-		const mentionedUser = interaction.options.getUser('member').id;
+		const mentionedUser = await interaction.options.getUser('member').id;
 
 		await httpClient.get('api/steamid', {
 			data: {

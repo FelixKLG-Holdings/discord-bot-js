@@ -18,23 +18,23 @@ module.exports = {
 		.setDefaultPermission(false),
 	async execute(interaction) {
 
-		const httpClient = axios.create({
+		const httpClient = await axios.create({
 			baseURL: LinkURL,
 			timeout: 3000,
 			headers: { 'Key': LinkAPIKEY },
 		});
 
-		const mentionedUser = interaction.options.getUser('member');
+		const mentionedUser = await interaction.options.getUser('member');
 
 		async function purchaseEmbed(purchases) {
 
 
-			const Embed = new MessageEmbed()
+			const Embed = await new MessageEmbed()
 				.setTitle('User Purchases')
 				.setDescription(`The purchases of ${mentionedUser.tag}`)
 				.setColor('#BF8AE0');
 
-			for (const addon of purchases) {
+			for (const addon of await purchases) {
 				if (addon === 7648) {
 					Embed.addField('Ley\'s Serverside AntiCheat', 'https://www.gmodstore.com/market/view/7648/', false);
 				}
@@ -61,7 +61,7 @@ module.exports = {
 
 		await httpClient.get('api/purchases', {
 			data: {
-				'id': mentionedUser.id,
+				'id': await mentionedUser.id,
 			},
 		}).then(async function(response) {
 			await interaction.reply({ embeds: [await purchaseEmbed(response.data)], ephemeral: true });

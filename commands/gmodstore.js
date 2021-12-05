@@ -29,8 +29,8 @@ module.exports = {
 				'id': mentionedUser,
 			},
 		}).then(async function(response) {
-			const SteamURL = `https://gmodstore.com/users/${response.data.toString().slice(1)}`;
-			await interaction.reply({ content: SteamURL, ephemeral: true });
+			const GmodStoreURL = `https://gmodstore.com/users/${response.data.toString().slice(1)}`;
+			await interaction.reply({ content: GmodStoreURL, ephemeral: true });
 		}).catch(async function(error) {
 			if (error.response.status === 404) {
 				await interaction.reply({ content: 'User is not linked.', ephemeral: true });

@@ -48,27 +48,21 @@ module.exports = {
 			for (const purchase of await userPurchases) {
 				if (purchase === 7648) {
 					await commandUser.roles.add('884061162482847765');
-					console.log(1);
 				}
 				else if (purchase === 3642) {
 					await commandUser.roles.add('884060408946757663');
-					console.log(2);
 				}
 				else if (purchase === 5061) {
 					await commandUser.roles.add('889306784551026780');
-					console.log(3);
 				}
 				else if (purchase === 5340) {
 					await commandUser.roles.add('884060954294386698');
-					console.log(4);
 				}
 				else if (purchase === 4868) {
 					await commandUser.roles.add('884060628128497716');
-					console.log(5);
 				}
 				else if (purchase === 4892) {
 					await commandUser.roles.add('884060823205609473');
-					console.log(6);
 				}
 			}
 		}

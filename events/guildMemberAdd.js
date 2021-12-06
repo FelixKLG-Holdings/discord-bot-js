@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { userMention, channelMention } = require('@discordjs/builders');
+const { captureException } = require('@sentry/node');
 const axios = require('axios');
 
 
@@ -36,7 +37,7 @@ module.exports = {
 				await member.guild.channels.cache.get(WelcomeCHANNEL).send({ content: userMention(member.user.id), embeds: [WelcomeMessage] });
 			}
 		}).catch(function(error) {
-			console.error(error);
+			captureException(error);
 		});
 	},
 };

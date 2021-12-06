@@ -11,7 +11,7 @@ const SentryEnabled = process.env.SENTRY_ENABLED;
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('roles')
-		.setDescription('test'),
+		.setDescription('Receive the roles which grant you access to eligible support channels'),
 	async execute(interaction) {
 
 		const apiHTTP = await axios.create({

@@ -39,7 +39,7 @@ module.exports = {
 					await interaction.reply({ content: 'You are not linked.', ephemeral: true });
 				}
 				else if (SentryEnabled) {
-					Sentry.captureException(error);
+					captureException(error);
 				}
 			});
 		}

@@ -34,7 +34,6 @@ module.exports = {
 			if (response.status === 200) {
 				await member.roles.add(VerifiedMEMBERROLE);
 				await member.guild.channels.cache.get(WelcomeCHANNEL).send({ content: userMention(member.user.id), embeds: [WelcomeMessage] });
-				await console.log('test');
 			}
 		}).catch(function(error) {
 			console.error(error);

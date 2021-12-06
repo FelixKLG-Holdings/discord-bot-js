@@ -1,5 +1,5 @@
 const axios = require('axios');
-const Sentry = require('@sentry/node');
+const { captureException } = require('@sentry/node');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const { slug } = require('cuid');
@@ -39,7 +39,7 @@ module.exports = {
 					await interaction.reply({ content: 'You are not linked.', ephemeral: true });
 				}
 				else if (SentryEnabled) {
-					Sentry.captureException(error);
+					captureException(error);
 				}
 			});
 		}
@@ -58,7 +58,7 @@ module.exports = {
 						await interaction.reply({ content: 'User is not linked.', ephemeral: true });
 					}
 					else if (SentryEnabled) {
-						Sentry.captureException(error);
+						captureException(error);
 					}
 				});
 			}
@@ -74,7 +74,7 @@ module.exports = {
 					}
 				}).catch(async function(error) {
 					if (SentryEnabled) {
-						Sentry.captureException(error);
+						captureException(error);
 					}
 				});
 			if (coupons) {
@@ -91,7 +91,7 @@ module.exports = {
 					return response.data['code'];
 				}).catch(async function(error) {
 					if (SentryEnabled) {
-						Sentry.captureException(error);
+						captureException(error);
 					}
 				});
 			}

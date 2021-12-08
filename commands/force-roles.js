@@ -6,7 +6,7 @@ const LinkURL = process.env.API_URL;
 const LinkAPIKEY = process.env.API_KEY;
 const SentryEnabled = process.env.SENTRY_ENABLED;
 
-module.export = {
+module.exports = {
     data: new SlashCommandBuilder()
         .setName('force-roles')
         .setDescription('Force run the roles command on a select user.')

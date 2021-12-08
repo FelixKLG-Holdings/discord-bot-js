@@ -71,7 +71,7 @@ module.exports = {
 				}
 			}
 		}
-
+		await assignRoles();
         await interaction.reply({content: 'Roles assigned to user', ephemeral: true})
     }
 }

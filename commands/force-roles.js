@@ -7,25 +7,25 @@ const LinkAPIKEY = process.env.API_KEY;
 const SentryEnabled = process.env.SENTRY_ENABLED;
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('force-roles')
-        .setDescription('Force run the roles command on a select user.')
-        .addUserOption(option =>
+	data: new SlashCommandBuilder()
+		.setName('force-roles')
+		.setDescription('Force run the roles command on a select user.')
+		.addUserOption(option =>
 			option.setName('member')
 				.setDescription('The member to force roles upon.')
 				.setRequired(true))
-        .setDefaultPermission(false),
-    async execute(interaction) {
+		.setDefaultPermission(false),
+	async execute(interaction) {
 
-        const apiHTTP = await axios.create({
+		const apiHTTP = await axios.create({
 			baseURL: LinkURL,
 			timeout: 3000,
 			headers: { 'key': LinkAPIKEY },
 		});
 
-        const mentionedUser = await interaction.options.getUser('member').id;
+		const mentionedUser = await interaction.options.getUser('member').id;
 
-        async function getPurchases() {
+		async function getPurchases() {
 			return await apiHTTP.get('api/purchases', {
 				data: {
 					'id': mentionedUser,
@@ -42,7 +42,7 @@ module.exports = {
 			});
 		}
 
-        const userPurchases = await getPurchases();
+		const userPurchases = await getPurchases();
 
 		async function assignRoles() {
 
@@ -72,6 +72,6 @@ module.exports = {
 			}
 		}
 		await assignRoles();
-        await interaction.reply({content: 'Roles assigned to user', ephemeral: true})
-    }
-}
+		await interaction.reply({ content: 'Roles assigned to user', ephemeral: true });
+	},
+};

@@ -49,8 +49,10 @@ const rest = new REST({ version: '9' }).setToken(Token);
 })();
 
 client.once('ready', async funClient => {
+	await console.log('Client ready');
 	if (!funClient.guilds) await funClient.guilds.fetch();
 	const liveCommands = await funClient.guilds.cache.get(GuildID)?.commands.fetch();
+	await console.log('Fetched guild');
 
 	for (const liveCommand of await liveCommands) {
 		const liveCommandJSON = JSON.stringify(await liveCommand);
@@ -65,5 +67,6 @@ client.once('ready', async funClient => {
 			await command.permissions.set({ permissions });
 		}
 	}
+	await console.log('Command permissions pushed');
 	await funClient.destroy();
 });

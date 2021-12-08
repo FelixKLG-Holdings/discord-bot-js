@@ -43,8 +43,6 @@ module.exports = {
 
 			const commandUser = await interaction.member;
 
-			console.log(userPurchases);
-
 			for (const purchase of await userPurchases) {
 				if (purchase === 7648) {
 					await commandUser.roles.add('884061162482847765');

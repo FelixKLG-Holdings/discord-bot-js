@@ -36,8 +36,13 @@ module.exports = {
 				await member.roles.add(VerifiedMEMBERROLE);
 				await member.guild.channels.cache.get(WelcomeCHANNEL).send({ content: userMention(member.user.id), embeds: [WelcomeMessage] });
 			}
+			else {
+				await member.guild.channels.cache.get(WelcomeCHANNEL).send({ content: userMention(member.user.id), embeds: [WelcomeMessage] });
+			}
 		}).catch(function(error) {
-			captureException(error);
+			if (!(error.response.status === 404)) {
+				captureException(error);
+			}
 		});
 	},
 };

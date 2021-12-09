@@ -58,7 +58,6 @@ client.on('interactionCreate', async interaction => {
 		}
 		catch (error) {
 			if (SentryEnabled) Sentry.captureException(error);
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 		}
 	}
 	else if (interaction.isSelectMenu()) {

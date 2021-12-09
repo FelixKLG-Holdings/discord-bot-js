@@ -31,15 +31,11 @@ module.exports = {
 			data: {
 				'id': mentionedUser.id,
 			},
-		}).then(async function(response) {
-			if (response.status === 200) {
-				await mentionedUser.member.roles.remove(MemberROLE);
-				await interaction.reply('member unlinked');
-			}
-			else if (response.status === 404) {
-				await interaction.reply('member is not linked');
-			}
+		}).then(async function() {
+			await mentionedUser.member.roles.remove(MemberROLE);
+			await interaction.reply('member unlinked');
 		}).catch(async function(error) {
+			await interaction.reply('User is not linked');
 			if (SentryEnabled) {
 				captureException(error);
 			}

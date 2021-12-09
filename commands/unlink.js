@@ -40,7 +40,7 @@ module.exports = {
 				await interaction.reply('member is not linked');
 			}
 		}).catch(async function(error) {
-			if (error.response.status !== 404 && SentryEnabled) {
+			if (SentryEnabled) {
 				captureException(error);
 			}
 		});

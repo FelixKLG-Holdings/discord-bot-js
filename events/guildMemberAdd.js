@@ -3,7 +3,7 @@ const { userMention, channelMention } = require('@discordjs/builders');
 const { captureException } = require('@sentry/node');
 const axios = require('axios');
 
-
+const SentryEnabled = process.env.SENTRY_ENABLED;
 const LinkAPIKEY = process.env.API_KEY;
 const LinkURL = process.env.API_URL;
 const VerifiedMEMBERROLE = process.env.VERIFIED_MEMBER_ROLE;
@@ -36,13 +36,11 @@ module.exports = {
 				await member.roles.add(VerifiedMEMBERROLE);
 				await member.guild.channels.cache.get(WelcomeCHANNEL).send({ content: userMention(member.user.id), embeds: [WelcomeMessage] });
 			}
-			else {
-				await member.guild.channels.cache.get(WelcomeCHANNEL).send({ content: userMention(member.user.id), embeds: [WelcomeMessage] });
-			}
 		}).catch(function(error) {
-			if (!(error.response.status === 404)) {
-				captureException(error);
-			}
+				await member.guild.channels.cache.get(WelcomeCHANNEL).send({ content: userMention(member.user.id), embeds: [WelcomeMessage] });
+				if (SentryEnabled && error.response.status !== 400) {
+					captureException(error);
+				}
 		});
 	},
 };

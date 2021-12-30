@@ -69,7 +69,7 @@ module.exports = {
 
 			await assignRoles();
 
-			const embed = new MessageEmbed()
+			const embed = await new MessageEmbed()
 				.setTitle('Support Roles')
 				.setDescription('Your support roles have been assigned.\nYou can now access support for your purchases')
 				.setColor('#52A8F2');

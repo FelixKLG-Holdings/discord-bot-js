@@ -9,7 +9,7 @@ const SentryEnabled = process.env.SENTRY_ENABLED;
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('gmodstore')
-		.setDescription('Get the mentioned user\'s attached GmoodStore account')
+		.setDescription('Get the mentioned user\'s attached GmodStore account')
 		.addUserOption(option =>
 			option.setName('member')
 				.setDescription('The user you want the GmodStore URL of.')

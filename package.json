@@ -23,8 +23,8 @@
   "dependencies": {
     "@discordjs/builders": "^0.11.0",
     "@discordjs/rest": "^0.2.0-canary.0",
-    "@sentry/node": "^6.16.0",
-    "@sentry/tracing": "^6.16.0",
+    "@sentry/node": "^6.16.1",
+    "@sentry/tracing": "^6.16.1",
     "axios": "^0.24.0",
     "cuid": "^2.1.8",
     "discord-api-types": "^0.25.2",

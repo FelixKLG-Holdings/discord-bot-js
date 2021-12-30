@@ -37,10 +37,10 @@ module.exports = {
 				await member.guild.channels.cache.get(WelcomeCHANNEL).send({ content: userMention(member.user.id), embeds: [WelcomeMessage] });
 			}
 		}).catch(async function(error) {
-				await member.guild.channels.cache.get(WelcomeCHANNEL).send({ content: userMention(member.user.id), embeds: [WelcomeMessage] });
-				if (SentryEnabled && error.response.status !== 400) {
-					captureException(error);
-				}
+			await member.guild.channels.cache.get(WelcomeCHANNEL).send({ content: userMention(member.user.id), embeds: [WelcomeMessage] });
+			if (SentryEnabled && error.response.status !== 400) {
+				captureException(error);
+			}
 		});
 	},
 };

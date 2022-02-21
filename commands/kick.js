@@ -1,20 +1,22 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { captureException } = require('@sentry/node');
-
-const SentryEnabled = process.env.SENTRY_ENABLED;
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('force-roles')
-		.setDescription('Force run the roles command on a select user.')
+		.setName('kick-member')
+		.setDescription('Kicks a member')
 		.addUserOption(option =>
 			option.setName('member')
-				.setDescription('The member to force roles upon.')
+				.setDescription('The member that needs a kicking')
 				.setRequired(true))
+		.addStringOption(option =>
+			option.setName('reason')
+				.setDescription('The reason this member is getting kicked')
+				.setRequired(false))
 		.setDefaultPermission(false),
 	async execute(interaction) {
 
-		const mentionedUser = await interaction.options.getUser('member').id;
+		const mentionedUser = await interaction.options.getUser('member');
+		mentionedUser.kick(interaction.options('reason'));
 
 
 		await interaction.reply({ content: 'User was kicked successfully', ephemeral: true });

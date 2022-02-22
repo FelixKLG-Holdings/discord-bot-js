@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node src/main.js",
     "deploy-commands": "node deploy-commands.js",
-    "lint": "eslint src/main.js deploy-commands.js src/commands src/events src/selector",
-    "lint:fix": "eslint src/main.js deploy-commands.js src/commands src/events src/selector --fix"
+    "lint": "eslint deploy-commands.js src/",
+    "lint:fix": "eslint deploy-commands.js src/ --fix"
   },
   "repository": {
     "type": "git",

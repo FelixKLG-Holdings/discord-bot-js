@@ -1,7 +1,7 @@
 {
   "name": "leystryku-bot-js",
   "version": "1.0.0",
-  "description": "A hopefully temp placement of a JS bot instead of the use of C#",
+  "description": "The Leystryku Discord bot for the support Discord.",
   "private": true,
   "start": "main.js",
   "scripts": {

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "The Leystryku Discord bot for the support Discord.",
   "private": true,
-  "start": "main.js",
+  "start": "./src/main.js",
   "scripts": {
     "start": "node src/main.js",
     "deploy-commands": "node deploy-commands.js",

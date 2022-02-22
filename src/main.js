@@ -1,22 +1,13 @@
 require('dotenv').config();
 const fs = require('fs');
-const Sentry = require('@sentry/node');
 const { Client, Collection, Intents } = require('discord.js');
 
-const SentryEnabled = process.env.SENTRY_ENABLED;
-const SentryDSN = process.env.SENTRY_DSN;
-
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS] });
-Sentry.init({
-	dsn: SentryDSN,
-	tracesSampleRate: 1.0,
-});
-
 
 const eventFiles = fs.readdirSync('./src/events').filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
-	const event = require(`./src/events/${file}`);
+	const event = require(`./events/${file}`);
 	if (event.once) {
 		client.once(event.name, (...args) => event.execute(...args));
 	}
@@ -27,12 +18,15 @@ for (const file of eventFiles) {
 
 client.commands = new Collection();
 
-const commandFiles = fs.readdirSync('./src/commands/*/').filter(file => file.endsWith('.js'));
+const folders = fs.readdirSync('./src/commands');
 
-for (const file of commandFiles) {
-	const command = require(`./src/commands/${file}`);
+for (const folder of folders) {
+	const commandFolders = fs.readdirSync(`./src/commands/${folder}`).filter(file => file.endsWith('.js'));
+	for (const file of commandFolders) {
+		const command = require(`./commands/${folder}/${file}`);
 
-	client.commands.set(command.data.name, command);
+		client.commands.set(command.data.name, command);
+	}
 }
 
 client.selectors = new Collection();
@@ -40,7 +34,7 @@ client.selectors = new Collection();
 const selectorFiles = fs.readdirSync('./src/selector/').filter(file => file.endsWith('.js'));
 
 for (const file of selectorFiles) {
-	const selector = require(`./src/selector/${file}`);
+	const selector = require(`./selector/${file}`);
 
 	client.selectors.set(selector.name, selector);
 }
@@ -56,8 +50,7 @@ client.on('interactionCreate', async interaction => {
 			await command.execute(interaction);
 		}
 		catch (error) {
-			console.log(error);
-			if (SentryEnabled) Sentry.captureException(error);
+			console.error(error);
 		}
 	}
 	else if (interaction.isSelectMenu()) {
@@ -69,7 +62,7 @@ client.on('interactionCreate', async interaction => {
 			await selector.execute(interaction);
 		}
 		catch (error) {
-			if (SentryEnabled) Sentry.captureException(error);
+			console.error(error);
 		}
 
 	}

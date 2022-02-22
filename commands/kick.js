@@ -15,10 +15,30 @@ module.exports = {
 		.setDefaultPermission(false),
 	async execute(interaction) {
 
-		const mentionedUser = await interaction.options.getUser('member');
-		mentionedUser.kick(interaction.options('reason'));
+		const memberPerms = await interaction.memberPermissions.has('KICK_MEMBERS');
+		const target = await interaction.options.getUser('member');
 
+		try {
+			if (memberPerms) {
+				kickMember();
+			}
+			else {
+				interaction.reply({ content: 'You do not have permission', ephemeral: true });
+			}
+		}
+		catch (e) {
+			console.error(e);
+		}
 
-		await interaction.reply({ content: 'User was kicked successfully', ephemeral: true });
+		async function kickMember() {
+			try {
+				target.kick('Random');
+			}
+			catch (e) {
+				console.error(e);
+			}
+		}
+
+		interaction.reply({ content: 'User was kicked successfully', ephemeral: true });
 	},
 };

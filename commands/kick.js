@@ -29,7 +29,7 @@ module.exports = {
 
 		try {
 			if (memberPerms) {
-				kickMember();
+				kickTimeout();
 			}
 			else {
 				interaction.reply({ content: 'You do not have permission', ephemeral: true });
@@ -40,17 +40,17 @@ module.exports = {
 			console.error(e);
 		}
 
-		async function msgMember() {
-			target.send('You have been kicked from ' + Guild.name + '\n Reason: ' + reason);
+		async function sendMsg() {
+			target.send('You have been kicked from ' + interaction.guild.name + '\nReason: ' + reason);
+		}
+		async function kickTimeout() {
+			setTimeout(function kickMember() {
+				target.kick(reason);
+			}, 1000);
 		}
 
-		async function kickMember() {
-			// eslint-disable-next-line quotes
-			target.kick(reason);
-		}
-
-		await msgMember();
-		await kickMember();
+		await kickTimeout();
+		await sendMsg();
 		interaction.reply({ content: 'User was kicked successfully', ephemeral: true });
 	},
 };

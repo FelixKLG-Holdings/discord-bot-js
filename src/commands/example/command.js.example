@@ -17,5 +17,5 @@ module.exports = {
 This code follows the Discord.JS guide, it has been tweaked quite a bit though.
 To create a command place it in the respective folder, if no folder exists i.e. moderation, create it.
 
-Before submitting a pull-request to using this in production, test your code.
+Before submitting a pull-request or using this in production, test your code; I mean a lot of testing.
  */

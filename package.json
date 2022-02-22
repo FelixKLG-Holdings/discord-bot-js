@@ -5,10 +5,10 @@
   "private": true,
   "start": "main.js",
   "scripts": {
-    "start": "node main.js",
+    "start": "node src/main.js",
     "deploy-commands": "node deploy-commands.js",
-    "lint": "eslint main.js deploy-commands.js commands events",
-    "lint:fix": "eslint main.js deploy-commands.js commands events --fix"
+    "lint": "eslint src/main.js deploy-commands.js src/commands src/events src/selector",
+    "lint:fix": "eslint src/main.js deploy-commands.js src/commands src/events src/selector --fix"
   },
   "repository": {
     "type": "git",

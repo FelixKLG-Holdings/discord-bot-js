@@ -4,69 +4,48 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { Client, Intents } = require('discord.js');
 
-const ClientID = process.env.CLIENT_ID;
-const GuildID = process.env.GUILD_ID;
-const Token = process.env.DISCORD_TOKEN;
-const supportRole = process.env.SUPPORT_ROLE;
-
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-client.login(Token).then(() => {
+client.login(process.env.DISCORD_TOKEN).then(() => {
 	console.log('Client Authenticated');
 });
 
-const permissions = [
-	{
-		id: supportRole,
-		type: 'ROLE',
-		permission: true,
-	},
-];
-
 const commands = [];
+const permissions = [];
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const folders = fs.readdirSync('./src/commands');
 
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	commands.push(command.data.toJSON());
+for (const folder of folders) {
+	const commandFolders = fs.readdirSync(`./src/commands/${folder}`).filter(file => file.endsWith('.js'));
+	for (const file of commandFolders) {
+		const command = require(`./src/commands/${folder}/${file}`);
+		commands.push(command.data.toJSON());
+	}
 }
 
-const rest = new REST({ version: '9' }).setToken(Token);
+const rest = new REST({ version: 9 }).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
-	try {
-		console.log('Started refreshing application (/) commands.');
+	console.log('Started refreshing application (/) commands.');
 
-		await rest.put(
-			Routes.applicationGuildCommands(ClientID, GuildID),
-			{ body: commands },
-		);
-		console.log('Successfully reloaded application (/) commands.');
-	}
-	catch (error) {
-		console.error(error);
-	}
+	await rest.put(
+		Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+		{ body: commands },
+	).then(() => console.log('Successfully reloaded application (/) commands.'))
+		.catch(console.error);
 })();
 
-client.once('ready', async funClient => {
+client.once('ready', async bot => {
 	await console.log('Client ready');
-	if (!funClient.guilds) await funClient.guilds.fetch();
-	const liveCommands = await funClient.guilds.cache.get(GuildID)?.commands.fetch();
+	if (!bot.guilds) await bot.guilds.fetch();
 	await console.log('Fetched guild');
 
-	for (const liveCommand of await liveCommands) {
-		const liveCommandJSON = JSON.stringify(await liveCommand);
-		const liveCommandObject = JSON.parse(liveCommandJSON);
+	//
+	// if (!liveCommandPermission) {
+	// 	const command = await client.guilds.cache.get(process.env.GUILD_ID)?.commands.fetch(liveCommandID);
+	//
+	// 	await command.permissions.set({ permissions });
+	// }
 
-		const liveCommandPermission = liveCommandObject[1].defaultPermission;
-		const liveCommandID = liveCommandObject[1].id;
-
-		if (!liveCommandPermission) {
-			const command = await client.guilds.cache.get(GuildID)?.commands.fetch(liveCommandID);
-
-			await command.permissions.set({ permissions });
-		}
-	}
-	await console.log('Command permissions pushed');
-	await funClient.destroy();
+	console.log('Command permissions pushed');
+	await bot.destroy();
 });

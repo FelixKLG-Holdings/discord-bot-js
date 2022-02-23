@@ -15,10 +15,56 @@ module.exports = {
 		.setDefaultPermission(false),
 	async execute(interaction) {
 
-		const mentionedUser = await interaction.options.getUser('member');
-		mentionedUser.kick(interaction.options('reason'));
+		const memberPerms = await interaction.memberPermissions.has('KICK_MEMBERS');
+		const target = await interaction.options.getMember('member');
+		let reason;
 
+		if (interaction.options.getString('reason') === null) {
+			reason = 'No reason provided';
+		}
+		else {
+			reason = interaction.options.getString('reason');
+		}
 
-		await interaction.reply({ content: 'User was kicked successfully', ephemeral: true });
+		try {
+			if (memberPerms) {
+				if (target.user.bot) {
+					interaction.reply({ content: 'I will not kick my own kind!', ephemeral: true });
+					return;
+				}
+				else if (!target.kickable) {
+					interaction.reply({ content: 'It seems I can not kick this user! Make sure my rank is higher.', ephemeral: true });
+					return;
+				}
+				else if (!target.manageable) {
+					interaction.reply({ content: 'It seems I can not kick this user! Make sure my rank is higher.', ephemeral: true });
+					return;
+				}
+				else {
+					kickTimeout();
+				}
+			}
+			else {
+				interaction.reply({ content: 'You do not have permission', ephemeral: true });
+				return;
+			}
+		}
+		catch (e) {
+			console.error(e);
+		}
+
+		async function sendMsg() {
+			target.send('You have been kicked from ' + interaction.guild.name + '\nReason: ' + reason);
+		}
+		async function kickTimeout() {
+			setTimeout(function kickMember() {
+				//target.kick(reason);
+			}, 300);
+		}
+
+		await kickTimeout();
+		await sendMsg();
+		console.log(target.bot);
+		interaction.reply({ content: 'User was kicked successfully', ephemeral: true });
 	},
 };

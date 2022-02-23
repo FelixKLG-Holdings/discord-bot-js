@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { DMChannel, Message, Guild } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -13,7 +12,7 @@ module.exports = {
 			option.setName('reason')
 				.setDescription('The reason this member is getting kicked')
 				.setRequired(false))
-		.setDefaultPermission(true),
+		.setDefaultPermission(false),
 	async execute(interaction) {
 
 		const memberPerms = await interaction.memberPermissions.has('KICK_MEMBERS');
@@ -29,7 +28,21 @@ module.exports = {
 
 		try {
 			if (memberPerms) {
-				kickTimeout();
+				if (target.user.bot) {
+					interaction.reply({ content: 'I will not kick my own kind!', ephemeral: true });
+					return;
+				}
+				else if (!target.kickable) {
+					interaction.reply({ content: 'It seems I can not kick this user! Make sure my rank is higher.', ephemeral: true });
+					return;
+				}
+				else if (!target.manageable) {
+					interaction.reply({ content: 'It seems I can not kick this user! Make sure my rank is higher.', ephemeral: true });
+					return;
+				}
+				else {
+					kickTimeout();
+				}
 			}
 			else {
 				interaction.reply({ content: 'You do not have permission', ephemeral: true });
@@ -45,12 +58,13 @@ module.exports = {
 		}
 		async function kickTimeout() {
 			setTimeout(function kickMember() {
-				target.kick(reason);
-			}, 1000);
+				//target.kick(reason);
+			}, 300);
 		}
 
 		await kickTimeout();
 		await sendMsg();
+		console.log(target.bot);
 		interaction.reply({ content: 'User was kicked successfully', ephemeral: true });
 	},
 };

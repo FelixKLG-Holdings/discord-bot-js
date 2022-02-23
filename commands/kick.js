@@ -58,13 +58,12 @@ module.exports = {
 		}
 		async function kickTimeout() {
 			setTimeout(function kickMember() {
-				//target.kick(reason);
+				// target.kick(reason);
 			}, 300);
 		}
 
 		await kickTimeout();
 		await sendMsg();
-		console.log(target.bot);
 		interaction.reply({ content: 'User was kicked successfully', ephemeral: true });
 	},
 };

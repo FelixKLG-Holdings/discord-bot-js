@@ -8,6 +8,7 @@ const gmsAPI = axios.create({
 });
 
 async function getCoupons(addonId) {
+	console.log(111)
 	return await gmsAPI.get(`addons/${addonId}/coupons`);
 }
 

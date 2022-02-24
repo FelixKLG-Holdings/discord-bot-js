@@ -1,11 +1,6 @@
 const axios = require('axios');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const { captureException } = require('@sentry/node');
-
-const LinkAPIKEY = process.env.API_KEY;
-const LinkURL = process.env.API_URL;
-const SentryEnabled = process.env.SENTRY_ENABLED;
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -19,9 +14,9 @@ module.exports = {
 	async execute(interaction) {
 
 		const httpClient = await axios.create({
-			baseURL: LinkURL,
+			baseURL: process.env.API_URL,
 			timeout: 3000,
-			headers: { 'Key': LinkAPIKEY },
+			headers: { 'Key': process.env.API_KEY },
 		});
 
 		const mentionedUser = await interaction.options.getUser('member');
@@ -69,7 +64,7 @@ module.exports = {
 			if (error.response.status === 404) {
 				await interaction.reply({ content: 'User is not linked.', ephemeral: true });
 			}
-			else if (SentryEnabled) {captureException(error);}
+			else {console.error(error);}
 		});
 	},
 };

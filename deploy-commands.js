@@ -10,7 +10,7 @@ client.login(process.env.DISCORD_TOKEN).then(() => {
 });
 
 const commands = [];
-const permissions = [];
+// const permissions = [];
 
 const folders = fs.readdirSync('./src/commands');
 

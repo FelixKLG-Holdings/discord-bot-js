@@ -1,26 +1,28 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const ms = require('ms');
+require('dotenv').config();
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('ban-member')
-		.setDescription('Bans a member')
+		.setName('mute-member')
+		.setDescription('Mutes a member')
 		.addUserOption(option =>
 			option.setName('member')
-				.setDescription('The member that will be banned')
+				.setDescription('The member that will be muted')
 				.setRequired(true))
 		.addStringOption(option =>
 			option.setName('reason')
-				.setDescription('The reason this member is getting banned')
+				.setDescription('The reason this member is being muted')
 				.setRequired(true))
 		.addStringOption(option =>
 			option.setName('time')
-				.setDescription('How long this user is to be banned')
+				.setDescription('How long this user is to be muted')
 				.setRequired(false))
 		.setDefaultPermission(false),
 	async execute(interaction) {
 
-		const memberPerms = await interaction.memberPermissions.has('BAN_MEMBERS');
+		const memberPerms = await interaction.memberPermissions.has('MUTE_MEMBERS');
+		const mutedRole = process.env.MUTED_ROLE;
 		const target = await interaction.options.getMember('member');
 		const reason = await interaction.options.getString('reason');
 		const time = await interaction.options.getString('time');
@@ -41,7 +43,7 @@ module.exports = {
 						return;
 					}
 					else {
-						banTimeout();
+						muteMember();
 					}
 				}
 				else {
@@ -53,25 +55,18 @@ module.exports = {
 				console.error(e);
 			}
 		}
-
-		async function sendMsg() {
+		async function muteMember() {
 			if (time == null) {
-				target.send('You have been banned from ' + interaction.guild.name + ' permanently.' + '\nReason: ' + reason);
+				target.send('You have been muted in ' + interaction.guild.name + ' permanently.' + '\nReason: ' + reason);
 			}
 			else if (ms(time) <= 0) {
-				target.send('You have been banned from ' + interaction.guild.name + ' permanently.' + '\nReason: ' + reason);
+				target.send('You have been muted in ' + interaction.guild.name + ' permanently.' + '\nReason: ' + reason);
 			}
 			else {
 				const timeMs = ms(time);
-				target.send('You have been banned from ' + interaction.guild.name + ' for ' + ms(timeMs, { long: true }) + '.' + '\nReason: ' + reason);
+				target.send('You have been muted in ' + interaction.guild.name + ' for ' + ms(timeMs, { long: true }) + '.' + '\nReason: ' + reason);
 			}
-			target.add();
-		}
-
-		async function banTimeout() {
-			setTimeout(function banMember() {
-				target.ban({ days: 7, reason: reason });
-			}, 300);
+			target.roles.add(mutedRole, 'User was muted because ' + reason);
 		}
 
 		if (time == null) {
@@ -79,18 +74,12 @@ module.exports = {
 		}
 		else if (ms(time) > 0) {
 			setTimeout(async function() {
-				await interaction.guild.fetch().then(async bans => {
-					if (bans.size == 0) return console.log('Could not unban user as there are no banned users in guild');
-					const bannedUser = bans.fetch(b => b.user.id == target.id);
-					if (!bannedUser) return console.log('User ID ' + target.id + 'is already unbanned');
-					await interaction.guild.members.unban(target.id, 'Ban time is up');
-					console.log('Unbanned ' + target.id);
-				});
+				target.roles.remove(mutedRole, 'User mute time is up');
+				console.log('Unmuted ' + target.id);
 			}, ms(time));
 		}
-
-		await banTimeout();
-		await sendMsg();
-		interaction.reply({ content: 'User was banned successfully', ephemeral: true });
+		const timeMs = ms(time);
+		await muteMember();
+		interaction.reply({ content: 'User was muted for ' + ms(timeMs, { long: true }) + '.', ephemeral: true });
 	},
 };

@@ -28,15 +28,15 @@ module.exports = {
 
 		try {
 			if (memberPerms) {
-				if (target.user.bot) {
+				if (target == null) {
+					interaction.reply({ content: 'This user is no longer in the server.', ephemeral: true });
+					return;
+				}
+				else if (target.user.bot) {
 					interaction.reply({ content: 'I will not kick my own kind!', ephemeral: true });
 					return;
 				}
-				else if (!target.kickable) {
-					interaction.reply({ content: 'It seems I can not kick this user! Make sure my rank is higher.', ephemeral: true });
-					return;
-				}
-				else if (!target.manageable) {
+				else if (!target.kickable || !target.manageable) {
 					interaction.reply({ content: 'It seems I can not kick this user! Make sure my rank is higher.', ephemeral: true });
 					return;
 				}

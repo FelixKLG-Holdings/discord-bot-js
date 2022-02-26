@@ -29,7 +29,7 @@ module.exports = {
 				'id': mentionedUser,
 			},
 		}).then(async function(response) {
-			const GmodStoreURL = `https://gmodstore.com/users/${response.data.toString().slice(1)}`;
+			const GmodStoreURL = `https://gmodstore.com/users/${response.data.id}`;
 			await interaction.reply({ content: GmodStoreURL, ephemeral: true });
 		}).catch(async function(error) {
 			if (error.response.status === 404) {

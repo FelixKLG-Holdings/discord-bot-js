@@ -28,7 +28,7 @@ module.exports = {
 		async function getPurchases() {
 			return await apiHTTP.get('api/purchases', {
 				data: {
-					'id': mentionedUser,
+					'id': await mentionedUser,
 				},
 			}).then(async function(response) {
 				return await response.data;

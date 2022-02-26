@@ -29,7 +29,7 @@ module.exports = {
 				'id': mentionedUser,
 			},
 		}).then(async function(response) {
-			const SteamURL = `https://steamcommunity.com/profiles/${response.data.toString().slice(1)}`;
+			const SteamURL = `https://steamcommunity.com/profiles/${response.data.id}`;
 			await interaction.reply({ content: SteamURL, ephemeral: true });
 		}).catch(async function(error) {
 			if (error.response.status === 404) {

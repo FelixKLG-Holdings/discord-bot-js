@@ -52,7 +52,7 @@ module.exports = {
 						'id': await interaction.user.id,
 					},
 				}).then(async function(response) {
-					return response.data.slice(1);
+					return response.data.id;
 				}).catch(async function(error) {
 					if (error.response.status === 404) {
 						await interaction.reply({ content: 'User is not linked.', ephemeral: true });

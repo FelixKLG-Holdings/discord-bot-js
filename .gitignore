@@ -110,3 +110,8 @@ dist
 # IDE Text Editors
 .idea/
 .vscode/
+.pnp.cjs
+.yarn/
+.yarnrc.yml
+.pnp.loader.mjs
+package-lock.json

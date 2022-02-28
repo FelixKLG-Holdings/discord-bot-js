@@ -22,10 +22,9 @@ module.exports = {
 	async execute(interaction) {
 
 		const memberPerms = await interaction.memberPermissions.has('MUTE_MEMBERS');
-		const mutedRole = process.env.MUTED_ROLE;
 		const target = await interaction.options.getMember('member');
 		const reason = await interaction.options.getString('reason');
-		const time = await interaction.options.getString('time');
+		const time = ms(await interaction.options.getString('time'));
 
 		if (interaction.options) {
 			try {
@@ -56,29 +55,15 @@ module.exports = {
 			}
 		}
 		async function muteMember() {
-			if (time == null) {
-				target.send('You have been muted in ' + interaction.guild.name + ' permanently.' + '\nReason: ' + reason);
+			try {
+				target.send('You have been muted in ' + interaction.guild.name + ' for ' + ms(time, { long: true }) + '.' + '\nReason: ' + reason);
+				target.timeout(time, 'User was muted because ' + reason);
 			}
-			else if (ms(time) <= 0) {
-				target.send('You have been muted in ' + interaction.guild.name + ' permanently.' + '\nReason: ' + reason);
+			catch (e) {
+				console.error(e);
 			}
-			else {
-				const timeMs = ms(time);
-				target.send('You have been muted in ' + interaction.guild.name + ' for ' + ms(timeMs, { long: true }) + '.' + '\nReason: ' + reason);
-			}
-			target.roles.add(mutedRole, 'User was muted because ' + reason);
 		}
 
-		if (time == null) {
-			// empty
-		}
-		else if (ms(time) > 0) {
-			setTimeout(async function() {
-				target.roles.remove(mutedRole, 'User mute time is up');
-				console.log('Unmuted ' + target.id);
-			}, ms(time));
-		}
-		const timeMs = ms(time);
-		interaction.reply({ content: 'User was muted for ' + ms(timeMs, { long: true }) + '.', ephemeral: true });
+		interaction.reply({ content: 'User was muted for ' + ms(time, { long: true }) + '.', ephemeral: true });
 	},
 };

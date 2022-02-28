@@ -17,7 +17,7 @@ module.exports = {
 		.addStringOption(option =>
 			option.setName('time')
 				.setDescription('How long this user is to be muted')
-				.setRequired(false))
+				.setRequired(true))
 		.setDefaultPermission(false),
 	async execute(interaction) {
 
@@ -31,15 +31,15 @@ module.exports = {
 			try {
 				if (memberPerms) {
 					if (target == null) {
-						interaction.reply({ content: 'This user is no longer in the server. Are you sure they are not already banned?', ephemeral: true });
+						interaction.reply({ content: 'This user is no longer in the server.', ephemeral: true });
 						return;
 					}
 					else if (target.user.bot) {
-						interaction.reply({ content: 'I will not ban my own kind!', ephemeral: true });
+						interaction.reply({ content: 'I will not mute my own kind!', ephemeral: true });
 						return;
 					}
-					else if (!target.bannable || !target.manageable) {
-						interaction.reply({ content: 'It seems I can not ban this user! Make sure my rank is higher.', ephemeral: true });
+					else if (!target.manageable) {
+						interaction.reply({ content: 'It seems I can not mute this user! Make sure my rank is higher.', ephemeral: true });
 						return;
 					}
 					else {
@@ -79,7 +79,6 @@ module.exports = {
 			}, ms(time));
 		}
 		const timeMs = ms(time);
-		await muteMember();
 		interaction.reply({ content: 'User was muted for ' + ms(timeMs, { long: true }) + '.', ephemeral: true });
 	},
 };

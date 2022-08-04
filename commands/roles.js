@@ -21,10 +21,8 @@ module.exports = {
 		});
 
 		async function getPurchases() {
-			return await apiHTTP.get('api/purchases', {
-				data: {
+			return await apiHTTP.post('api/purchases', {
 					'id': interaction.user.id,
-				},
 			}).then(async function(response) {
 				return await response.data;
 			}).catch(async function(error) {

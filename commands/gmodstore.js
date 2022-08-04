@@ -24,10 +24,8 @@ module.exports = {
 
 		const mentionedUser = await interaction.options.getUser('member').id;
 
-		await httpClient.get('api/steamid', {
-			data: {
+		await httpClient.post('api/steamid', {
 				'id': mentionedUser,
-			},
 		}).then(async function(response) {
 			const GmodStoreURL = `https://gmodstore.com/users/${response.data.id}`;
 			await interaction.reply({ content: GmodStoreURL, ephemeral: true });

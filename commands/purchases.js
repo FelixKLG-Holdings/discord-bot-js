@@ -59,10 +59,8 @@ module.exports = {
 		}
 
 
-		await httpClient.get('api/purchases', {
-			data: {
+		await httpClient.post('api/purchases', {
 				'id': await mentionedUser.id,
-			},
 		}).then(async function(response) {
 			await interaction.reply({ embeds: [await purchaseEmbed(response.data)], ephemeral: true });
 		}).catch(async function(error) {

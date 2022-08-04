@@ -27,10 +27,8 @@ module.exports = {
 
 		const mentionedUser = await interaction.options.getUser('member');
 
-		await httpClient.get('api/unlink', {
-			data: {
+		await httpClient.post('api/unlink', {
 				'id': mentionedUser.id,
-			},
 		}).then(async function() {
 			await mentionedUser.member.roles.remove(MemberROLE);
 			await interaction.reply('member unlinked');

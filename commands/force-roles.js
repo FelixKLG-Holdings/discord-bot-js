@@ -26,10 +26,8 @@ module.exports = {
 		const mentionedUser = await interaction.options.getUser('member').id;
 
 		async function getPurchases() {
-			return await apiHTTP.get('api/purchases', {
-				data: {
+			return await apiHTTP.post('api/purchases', {
 					'id': await mentionedUser,
-				},
 			}).then(async function(response) {
 				return await response.data;
 			}).catch(async function(error) {

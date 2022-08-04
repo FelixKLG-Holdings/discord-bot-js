@@ -28,11 +28,10 @@ module.exports = {
 		});
 
 		async function purchases() {
-			return await apiHTTP.get('api/purchases', {
-				data: {
-					'id': interaction.user.id,
+			return await apiHTTP.post('api/purchases', {
+				'id': interaction.user.id,
 				},
-			}).then(async function(response) {
+			).then(async function(response) {
 				return await response.data;
 			}).catch(async function(error) {
 				if (error.response.status === 404) {
@@ -47,10 +46,8 @@ module.exports = {
 		async function createCoupon() {
 
 			async function getSID() {
-				return await apiHTTP.get('api/steamid', {
-					data: {
+				return await apiHTTP.post('api/steamid', {
 						'id': await interaction.user.id,
-					},
 				}).then(async function(response) {
 					return response.data.id;
 				}).catch(async function(error) {

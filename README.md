@@ -1,5 +1,5 @@
 # Archived!
-This project has been rewritten and is not available at:
+This project has been rewritten and is now available at:
 https://github.com/FelixKLG/leybot-rs
 
 # discord-bot-js
